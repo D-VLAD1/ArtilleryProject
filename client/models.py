@@ -4,6 +4,7 @@ from django.db import models
 class ArtillerySettings(models.Model):
     name = models.CharField(max_length=100)
     max_distance = models.IntegerField()
+    bullet_speed = models.IntegerField()
 
     class Meta:
         verbose_name_plural = 'Settings'
