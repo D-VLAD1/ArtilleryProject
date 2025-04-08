@@ -1,0 +1,18 @@
+<!-- Панель зброї -->
+<div id="weapon-panel" class="side-panel">
+    <h2>Оберіть засіб ураження</h2>
+    <p>Оберіть тип зброї:</p>
+    <select id="weapon-type" onchange="updateWeaponCatalog()">
+      <option value="artillery">Артилерія</option>
+      <option value="rocket">Ракетний комплекс</option>
+      <option value="missile">Місильна установка</option>
+    </select>
+    <button onclick="setWeapon()">Обрати</button>
+  
+    <div id="weapon-catalog" class="weapon-catalog">
+      <!-- Тут буде каталог зброї -->
+    </div>
+    
+    <span class="close-x" onclick="closePanel()">✕</span>
+  </div>
+  

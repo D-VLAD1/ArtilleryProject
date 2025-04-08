@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Map</title>
+  <link rel="icon" type="image/png" href='Bucket_of_Axolotl_JE1_BE1.png'>
+  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.3.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="icon-menu">
+    <div class="icon-button" data-tooltip="Локація" onclick="openPanel('location')">
+      <img src="location-pin.png" id="pic" alt="Локація">
+    </div>
+    <div class="icon-button" data-tooltip="Ціль" onclick="openPanel('target')">
+      <img src="target.png" id="pic" alt="Ціль">
+    </div>
+    <div class="icon-button" data-tooltip="Зброя" onclick="openPanel('weapon')">
+      <img src="artillery.png" id="pic" alt="Зброя">
+    </div>
+  </div>
+  
+    <!-- Панель локації -->
+    <div id="location-panel" class="side-panel">
+      <h2>Задайте свою локацію</h2>
+      <p>Введіть координати в кілометрових квадратах:</p>
+      <input type="number" id="latitude" placeholder="Широта (км)" step="0.00001">
+      <input type="number" id="longitude" placeholder="Довгота (км)" step="0.00001">
+      <button onclick="setLocation()">Встановити локацію</button>
+      <p>Або виберіть точку на мапі</p>
+      <button onclick="startSelecting('location1')">Обрати місце пострілу</button>
+      <span class="close-x" onclick="closePanel()">✕</span>
+    </div>
+  
+    <!-- Панель цілі -->
+    <div id="target-panel" class="side-panel">
+      <h2>Задайте ціль</h2>
+      <p>Введіть координати для цілі в кілометрових квадратах:</p>
+      <input type="number" id="target-latitude" placeholder="Широта (км)" step="0.00001">
+      <input type="number" id="target-longitude" placeholder="Довгота (км)" step="0.00001">
+      <button onclick="setTarget()">Встановити ціль</button>
+      <p>Або виберіть точку на мапі</p>
+      <button onclick="startSelecting('target1')">Обрати ціль</button>
+      <span class="close-x" onclick="closePanel()">✕</span>
+    </div>
+
+    <!-- Панель зброї -->
+    <div id="weapon-panel" class="side-panel">
+      <h2>Оберіть засіб ураження</h2>
+      <p>Оберіть тип зброї:</p>
+      <select id="weapon-type">
+        <option value="artillery">Артилерія</option>
+        <option value="rocket">Ракетний комплекс</option>
+        <option value="missile">Місильна установка</option>
+      </select>
+      <button onclick="setWeapon()">Обрати</button>
+      <span class="close-x" onclick="closePanel()">✕</span>
+    </div>
+
+  <div id="loc1"></div>
+  <div id="loc2"></div>
+
+  <div id="map"></div>
+  <!-- <div id="elevation">Висота: --</div> -->
+  <div id="click-coords"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@3.3.1/dist/maplibre-gl.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
