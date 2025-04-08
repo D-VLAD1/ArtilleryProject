@@ -2,23 +2,24 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
+  {% load static %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3D Map</title>
-  <link rel="icon" type="image/png" href='Bucket_of_Axolotl_JE1_BE1.png'>
+  <link rel="icon" type="image/png" href="{% static 'client/img/Bucket_of_Axolotl_JE1_BE1.png' %}">
   <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.3.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{% static 'client/css/style.css' %}" />
 </head>
 <body>
 
   <div id="icon-menu">
     <div class="icon-button" data-tooltip="Локація" onclick="openPanel('location')">
-      <img src="location-pin.png" id="pic" alt="Локація">
+      <img src="{% static 'client/img/location-pin.png' %}" id="pic" alt="Локація">
     </div>
     <div class="icon-button" data-tooltip="Ціль" onclick="openPanel('target')">
-      <img src="target.png" id="pic" alt="Ціль">
+      <img src="{% static 'client/img/target.png' %}" id="pic" alt="Ціль">
     </div>
     <div class="icon-button" data-tooltip="Зброя" onclick="openPanel('weapon')">
-      <img src="artillery.png" id="pic" alt="Зброя">
+      <img src="{% static 'client/img/artillery.png' %}" id="pic" alt="Зброя">
     </div>
   </div>
   
@@ -67,7 +68,7 @@
   <div id="click-coords"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@3.3.1/dist/maplibre-gl.js"></script>
-  <script src="script.js"></script>
+  <script src="{% static 'client/js/script.js' %}"></script>
 
 </body>
 </html>
