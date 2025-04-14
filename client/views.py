@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+import json
+import math
 
 # Create your views here.
 def home(requests):
@@ -7,3 +10,15 @@ def home(requests):
 
 def map(requests):
     return render(requests, 'client/map.html')
+
+
+def compute(requests):
+    data = {}
+    if requests.method == 'POST':
+        post_data = json.loads(requests.body)
+        location, target, weapon = post_data.get('location'), post_data.get('target'), post_data.get('location')
+
+        angle = math.atan()
+
+
+    return JsonResponse({'Error': 'Something went wrong'} if not data else data)
