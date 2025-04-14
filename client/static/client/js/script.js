@@ -5,6 +5,8 @@ let selecting = null; // To track which location (location1 or target1) is being
 let shotMarker = null;
 let targetMarker = null;
 
+let selectedWeaponType = null;
+
 // Function to initialize map
 const map = new maplibregl.Map({
     container: 'map',
@@ -455,7 +457,7 @@ async function loadWeaponsData() {
             };
 
             // Отримуємо тип зброї з select
-            const selectedWeaponType = document.getElementById('weapon-type').value;
+            selectedWeaponType = document.getElementById('weapon-type').value;
             const weapons = weaponData[selectedWeaponType] || [];
             resolve(weapons); // Повертаємо список зброї для обраного типу
         }, 100); // Імітуємо затримку, як у запиту до бази даних
@@ -464,7 +466,7 @@ async function loadWeaponsData() {
 
 // Функція для обрання зброї
 function setWeapon() {
-    const selectedWeaponType = document.getElementById('weapon-type').value;
+    selectedWeaponType = document.getElementById('weapon-type').value;
     toggleCalculateButton(); // Перевіряємо, чи можна показати кнопку обрахунку
 }
 
@@ -479,9 +481,9 @@ function toggleCalculateButton() {
     console.log("Location 2:", target1); // Для дебагу
 
     if (location1 && target1) {
-        calculateButton.style.display = 'block'; // Показываем кнопку "Обрахувати"
+        calculateButton.style.display = 'block';
     } else {
-        calculateButton.style.display = 'none'; // Скрываем кнопку "Обрахувати"
+        calculateButton.style.display = 'none';
     }
 }
 
@@ -492,8 +494,33 @@ function calculate() {
     const target1 = JSON.parse(localStorage.getItem('target1'));
 
     if (location1 && target1) {
-        alert("Розрахунок успішно виконано!");
-        // Можна додати тут сам алгоритм розрахунку
+        // alert("Розрахунок успішно виконано!");
+        fetch('/compute/', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+                'location': location1,
+                'target': target1,
+                'weapon': selectedWeaponType
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Computed Numbers:', data);
+
+        })
+        .catch(error => {
+            console.error('Error:', error);
+    });
+
     } else {
         alert("Будь ласка, спочатку оберіть локацію і ціль!");
     }
@@ -518,9 +545,6 @@ toggleCalculateButton();
 function closePanel() {
     closeAllPanels();
 }
-
-
-
 
 document.getElementById('click-coords').style.fontFamily = 'MyCustomFont';
 document.getElementById('shot-coords').style.fontFamily = 'MyCustomFont';

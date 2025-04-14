@@ -215,16 +215,16 @@ body, html {
     z-index: 1000;
   }
 
-  .custom-marker {
+.custom-marker {
     background-size: cover;
     width: 16px;
     height: 16px;
     background-repeat: no-repeat;
     border-radius: 50%;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
-  }
+}
 
-  #weapon-dataset {
+#weapon-dataset {
   list-style-type: none;
   padding: 0;
   margin-top: 20px;
@@ -254,6 +254,5 @@ body, html {
 
 #open-weapon-panel {
     display: none;
-  }
-
+}
   
