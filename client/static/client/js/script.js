@@ -436,10 +436,10 @@ function updateWeaponsList() {
 
     // Оновлюємо дані для вибраного типу зброї
     loadWeaponsData().then(weapons => {
-        weapons.forEach(weapon => {
+        Object.entries(weapons).forEach(([id, name]) => {
             const weaponItem = document.createElement('option');
-            weaponItem.value = weapon.name
-            weaponItem.textContent = weapon.name;
+            weaponItem.value = name;
+            weaponItem.textContent = name;
             weaponList.appendChild(weaponItem);
         });
     });
@@ -449,21 +449,22 @@ function updateWeaponsList() {
 async function loadWeaponsData() {
     return new Promise((resolve) => {
         setTimeout(() => {
-
             fetch('/get_howitzer_names/')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Data from server:', data);
-                const weapons = data;
-            })
-            .catch(error => console.error('Error:', error));
-            resolve(weapons || []); // Повертаємо список зброї для обраного типу
-        }, 100); // Імітуємо затримку, як у запиту до бази даних
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data from server:', data);
+                    resolve(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resolve([]);
+                });
+        }, 100);
     });
 }
 
