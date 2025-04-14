@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'MyCustomFont';
-    src: url('/e-UkraineHead-Light.otf') format('opentype');
+    src: url('../fonts/e-UkraineHead-Light.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
@@ -11,7 +11,7 @@ body, html {
     padding: 0;
     height: 100%;
     width: 100%;
-    background-image: url("bq.png");
+    background-image: url("../img/bq.png");
     background-color: #fffcfc;
     background-size: cover;
     background-position: center;
