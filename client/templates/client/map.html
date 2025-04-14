@@ -27,19 +27,10 @@
 <div id="weapon-panel" class="side-panel">
   <h2>Оберіть засіб ураження</h2>
   <p>Оберіть тип зброї:</p>
-  <select id="weapon-type">
-    <option value="artillery">Артилерія</option>
-    <option value="rocket">Ракетний комплекс</option>
-    <option value="missile">Місильна установка</option>
-  </select>
-
-  <ul id="weapon-dataset"></ul>
-
-  <!-- Кнопка Обрати тепер внизу -->
-  <button id="select-button" onclick="setWeapon()">Обрати</button><br>
+  <select id="weapon-type"></select>
 
   <!-- Кнопка Обрахувати (з'являється після наявності локацій) -->
-  <br><button id="calculate-button" onclick="calculate()" style="display:none;">Обрахувати</button>
+  <br><button id="calculate-button" onclick="calculate()">Обрахувати</button>
 
   <span class="close-x" onclick="closePanel()">✕</span>
 </div>

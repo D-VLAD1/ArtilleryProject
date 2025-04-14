@@ -431,13 +431,14 @@ function openPanel(panelType) {
 
 // Оновлює список зброї залежно від вибраного типу
 function updateWeaponsList() {
-    const weaponList = document.getElementById('weapon-dataset');
+    const weaponList = document.getElementById('weapon-type');
     weaponList.innerHTML = ''; // Очищаємо список перед оновленням
 
     // Оновлюємо дані для вибраного типу зброї
     loadWeaponsData().then(weapons => {
         weapons.forEach(weapon => {
-            const weaponItem = document.createElement('li');
+            const weaponItem = document.createElement('option');
+            weaponItem.value = weapon.name
             weaponItem.textContent = weapon.name;
             weaponList.appendChild(weaponItem);
         });
@@ -448,43 +449,22 @@ function updateWeaponsList() {
 async function loadWeaponsData() {
     return new Promise((resolve) => {
         setTimeout(() => {
-            const weaponData = {
-                artillery: [
-                    { name: 'М101' },
-                    { name: 'М777' },
-                    { name: 'Д-30' }
-                ]
-            };
 
-            // Отримуємо тип зброї з select
-            selectedWeaponType = document.getElementById('weapon-type').value;
-            const weapons = weaponData[selectedWeaponType] || [];
-            resolve(weapons); // Повертаємо список зброї для обраного типу
+            fetch('/get_howitzer_names/')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data from server:', data);
+                const weapons = data;
+            })
+            .catch(error => console.error('Error:', error));
+            resolve(weapons || []); // Повертаємо список зброї для обраного типу
         }, 100); // Імітуємо затримку, як у запиту до бази даних
     });
-}
-
-// Функція для обрання зброї
-function setWeapon() {
-    selectedWeaponType = document.getElementById('weapon-type').value;
-    toggleCalculateButton(); // Перевіряємо, чи можна показати кнопку обрахунку
-}
-
-// Функція для перевірки локацій і відображення кнопки "Обрахувати"
-function toggleCalculateButton() {
-    const location1 = JSON.parse(localStorage.getItem('location1'));
-    const target1 = JSON.parse(localStorage.getItem('target1'));
-
-    const calculateButton = document.getElementById('calculate-button');
-
-    console.log("Location 1:", location1); // Для дебагу
-    console.log("Location 2:", target1); // Для дебагу
-
-    if (location1 && target1) {
-        calculateButton.style.display = 'block';
-    } else {
-        calculateButton.style.display = 'none';
-    }
 }
 
 function getCookie(name) {
@@ -508,6 +488,7 @@ function calculate() {
     // Перевірка чи є ціль та локація
     const location1 = JSON.parse(localStorage.getItem('location1'));
     const target1 = JSON.parse(localStorage.getItem('target1'));
+    const weapon = document.getElementById('weapon-type').value;
 
     if (location1 && target1) {
         // alert("Розрахунок успішно виконано!");
@@ -520,7 +501,7 @@ function calculate() {
             body: JSON.stringify({
                 'location': location1,
                 'target': target1,
-                'weapon': selectedWeaponType
+                'weapon': weapon
             })
         })
         .then(response => {
@@ -535,27 +516,11 @@ function calculate() {
         })
         .catch(error => {
             console.error('Error:', error);
-    });
-
+        });
     } else {
         alert("Будь ласка, спочатку оберіть локацію і ціль!");
     }
 }
-
-// Слухач події для зміни типу зброї
-document.getElementById('weapon-type').addEventListener('change', () => {
-    updateWeaponsList(); // Оновлюємо список зброї щоразу при зміні вибору
-    toggleCalculateButton(); // Перевірка і відображення кнопки "Обрахувати"
-});
-
-// Слухач для натискання на кнопку "Обрати"
-document.getElementById('select-button').addEventListener('click', () => {
-    setWeapon(); // Вибір зброї
-    toggleCalculateButton(); // Перевірка і відображення кнопки "Обрахувати"
-});
-
-// Якщо локації є вже в localStorage, ми одразу оновлюємо стан кнопки
-toggleCalculateButton();
 
 // Для закриття по ✕
 function closePanel() {
