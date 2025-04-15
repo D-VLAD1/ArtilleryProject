@@ -95,4 +95,4 @@ def _calculate(pos: dict, target: dict, weapon_name: str, bullet: str=None) -> t
 
     flight_time = dist / (vel * cos(angle))
 
-    return brng, angle, flight_time
+    return brng, degrees(angle), flight_time
