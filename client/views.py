@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
-from math import sqrt, cos, sin, degrees, atan2, atan
+from math import sqrt, cos, sin, degrees, atan2, atan, radians
 from .models import ArtillerySettings
 
 # Create your views here.
@@ -55,32 +55,43 @@ def _calculate(pos: dict, target: dict, weapon_name: str, bullet: str=None) -> t
     brng = atan2(y, x)
     brng = degrees(brng)
     brng = (brng + 360) % 360
+    brng = 360 - brng
 
     # Calculating distance
-    earth_radius = 6371
-    d_lat = degrees(lat2 - lat1)
-    d_lon = degrees(lon2 - lon1)
-    a = (sin(d_lat / 2) * sin(d_lat / 2) + cos(degrees(lat1))
-         * cos(degrees(lat2)) * sin(d_lon / 2) * sin(d_lon / 2))
+    earth_radius = 6371.0088
+    d_lat = radians(lat2 - lat1)
+    d_lon = radians(lon2 - lon1)
+    a = (sin(d_lat / 2) * sin(d_lat / 2) + cos(radians(lat1))
+         * cos(radians(lat2)) * sin(d_lon / 2) * sin(d_lon / 2))
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    dist = earth_radius * c
+    # Distance in meters
+    dist = earth_radius * c * 1000
+    # print(dist)
 
     weapon_data = ArtillerySettings.objects.get(name=weapon_name)
-    max_dist = weapon_data.max_distance[list(weapon_data.max_distance.keys())[0]] \
-        if bullet is None else weapon_data.max_distance[bullet]
+    max_dist = weapon_data.max_distance[list(weapon_data.max_distance.keys())[0]] * 1000 \
+        if bullet is None else weapon_data.max_distance[bullet] * 1000
     vel = weapon_data.bullet_speed
     min_angle = weapon_data.min_angle
     max_angle = weapon_data.max_angle
 
-    if dist > max_dist * 1000:
+
+    if dist > max_dist:
         return "Howitzer can't fire this far"
 
     g = 9.80665
     y = alt2 - alt1
 
-    angle = atan((vel**2 - sqrt(vel**4 - g * (g * dist ** 2 + 2 * y * vel ** 2))) / (g * x))
-    if not min_angle <= degrees(angle) <= max_angle:
-        return 'Howitzer can do an angle like this'
+    angle_low = atan((vel**2 - sqrt(vel**4 - g * (dist ** 2 + 2 * y * vel ** 2))) / (g * dist))
+    angle_high = atan((vel ** 2 + sqrt(vel ** 4 - g * (dist ** 2 + 2 * y * vel ** 2))) / (g * dist))
+    # print(f'angles: {degrees(angle_low), degrees(angle_high)}')
+    if not min_angle <= degrees(angle_low) <= max_angle and not min_angle <= degrees(angle_high) <= max_angle:
+        return "Howitzer can't do an angle like this"
+
+    if min_angle <= angle_low <= max_angle:
+        angle = angle_low
+    else:
+        angle = angle_high
 
     flight_time = dist / (vel * cos(angle))
 

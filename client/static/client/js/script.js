@@ -457,7 +457,7 @@ async function loadWeaponsData() {
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Data from server:', data);
+                    // console.log('Data from server:', data);
                     resolve(data);
                 })
                 .catch(error => {
@@ -512,8 +512,8 @@ function calculate() {
             return response.json();
         })
         .then(data => {
-            console.log('Computed Numbers:', data);
-
+            // console.log('Shooting data:', data);
+            alert(`Азимут: ${data['brng'].toFixed(5)}, Кут підйому: ${data['angle'].toFixed(5)}, Час польоту: ${data['flight_time'].toFixed(1)}`);
         })
         .catch(error => {
             console.error('Error:', error);
