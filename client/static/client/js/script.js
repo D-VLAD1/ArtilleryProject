@@ -505,17 +505,19 @@ function calculate() {
                 'weapon': weapon
             })
         })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                const error = await response.json();
+                throw new Error(error.error);
             }
             return response.json();
         })
         .then(data => {
             // console.log('Shooting data:', data);
-            alert(`Азимут: ${data['brng'].toFixed(5)}, Кут підйому: ${data['angle'].toFixed(5)}, Час польоту: ${data['flight_time'].toFixed(1)}`);
+            alert(`Азимут: ${data['brng'].toFixed(5)}, Кут підйому: ${data['angle'].toFixed(5)}, Час польоту: ${data['flight_time'].toFixed(1)} с.`);
         })
         .catch(error => {
+            alert(error)
             console.error('Error:', error);
         });
     } else {

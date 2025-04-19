@@ -27,7 +27,7 @@ def compute(requests):
 
         data = _calculate(location, target, weapon)
         if isinstance(data, str):
-            return JsonResponse({'Error': data})
+            return JsonResponse({'error': data}, status=400)
 
         brng, angle, flight_time = data
         return JsonResponse({
@@ -37,8 +37,8 @@ def compute(requests):
         })
 
     return JsonResponse({
-            'Error': 'POST method allowed'
-        })
+            'error': 'POST method allowed'
+        }, status=403)
 
 def _calculate(pos: dict, target: dict, weapon_name: str, bullet: str=None) -> tuple[float, float, float] | str:
     """Calculate azimuth, incline and time of flight for shooting"""
@@ -66,7 +66,6 @@ def _calculate(pos: dict, target: dict, weapon_name: str, bullet: str=None) -> t
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     # Distance in meters
     dist = earth_radius * c * 1000
-    # print(dist)
 
     weapon_data = ArtillerySettings.objects.get(name=weapon_name)
     max_dist = weapon_data.max_distance[list(weapon_data.max_distance.keys())[0]] * 1000 \
@@ -77,16 +76,17 @@ def _calculate(pos: dict, target: dict, weapon_name: str, bullet: str=None) -> t
 
 
     if dist > max_dist:
-        return "Howitzer can't fire this far"
+        # return f"Howitzer can't fire this far. Distance is {dist:.2f} m whereas max distance is {max_dist:.2f} m"
+        return f'Гаубиця не може стріляти так далеко. Відстань {dist:.2f} м, тоді як максимальна відстань {max_dist:.2f} м'
 
     g = 9.80665
     y = alt2 - alt1
 
     angle_low = atan((vel**2 - sqrt(vel**4 - g * (dist ** 2 + 2 * y * vel ** 2))) / (g * dist))
     angle_high = atan((vel ** 2 + sqrt(vel ** 4 - g * (dist ** 2 + 2 * y * vel ** 2))) / (g * dist))
-    # print(f'angles: {degrees(angle_low), degrees(angle_high)}')
     if not min_angle <= degrees(angle_low) <= max_angle and not min_angle <= degrees(angle_high) <= max_angle:
-        return "Howitzer can't do an angle like this"
+        # return f"Howitzer can't do an angle like this. From calculations the angle should be {degrees(angle_low):.2f} angles range from {min_angle} to {max_angle}"
+        return f'Гаубиця не може зробити такий кут. За розрахунками кут {degrees(angle_low):.2f}, а має знаходяться у діапазоні від {min_angle} до {max_angle}'
 
     if min_angle <= angle_low <= max_angle:
         angle = angle_low
