@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-u7lqr10iaz#+j%)lgmt#r&od4l&e03oqchm#4#lc9qekbuyc-6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['cautious-felice-d-vlad1-74f0c6d7.koyeb.app/']
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['https://cautious-felice-d-vlad1-74f0c6d7.koyeb.app']
 
