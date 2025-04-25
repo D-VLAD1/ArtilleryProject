@@ -1,1 +1,1 @@
-web: gunicorn ArtilleryProject.wsgi
+web: gunicorn Artillery.wsgi
