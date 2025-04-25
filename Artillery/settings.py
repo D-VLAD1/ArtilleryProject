@@ -27,6 +27,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['cautious-felice-d-vlad1-74f0c6d7.koyeb.app/']
 
+CSRF_TRUSTED_ORIGINS = ['https://cautious-felice-d-vlad1-74f0c6d7.koyeb.app']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
