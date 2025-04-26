@@ -21,7 +21,6 @@ def howitzer(request):
 
 
 def compute(requests):
-
     if requests.method == 'POST':
         post_data = json.loads(requests.body)
         location, target, weapon = post_data.get('location'), post_data.get('target'), post_data.get('weapon')

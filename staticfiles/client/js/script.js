@@ -492,7 +492,6 @@ function calculate() {
     const weapon = document.getElementById('weapon-type').value;
 
     if (location1 && target1) {
-        console.log('calculating...');
         fetch('/compute/', {
             method: 'POST',
             headers: {
@@ -507,8 +506,13 @@ function calculate() {
         })
         .then(async response => {
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error);
+                const errorText = await response.text(); // Read the response as text
+                try {
+                    const errorJson = JSON.parse(errorText); // Try parsing it as JSON
+                    throw new Error(errorJson.error);
+                } catch {
+                    throw new Error(errorText); // If parsing fails, throw the raw text
+                }
             }
             return response.json();
         })
