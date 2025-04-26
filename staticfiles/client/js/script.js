@@ -507,13 +507,8 @@ function calculate() {
         })
         .then(async response => {
             if (!response.ok) {
-                const errorText = await response.text(); // Read the response as text
-                try {
-                    const errorJson = JSON.parse(errorText); // Try parsing it as JSON
-                    throw new Error(errorJson.error);
-                } catch {
-                    throw new Error(errorText); // If parsing fails, throw the raw text
-                }
+                const error = await response.json();
+                throw new Error(error.error);
             }
             return response.json();
         })
