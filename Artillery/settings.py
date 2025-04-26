@@ -27,7 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://cautious-felice-d-vlad1-74f0c6d7.koyeb.app/map']
+CSRF_TRUSTED_ORIGINS = ['https://cautious-felice-d-vlad1-74f0c6d7.koyeb.app']
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

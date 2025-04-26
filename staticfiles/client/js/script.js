@@ -491,6 +491,7 @@ function calculate() {
     const target1 = JSON.parse(localStorage.getItem('target1'));
     const weapon = document.getElementById('weapon-type').value;
 
+    console.log('CSRF Token:', getCookie('csrftoken'));
     if (location1 && target1) {
         fetch('/compute/', {
             method: 'POST',
