@@ -13,7 +13,6 @@ def map(requests):
 
 def howitzer(request):
     data = {}
-    print(request.method)
     if request.method == "GET":
         for i, item in enumerate(ArtillerySettings.objects.all()):
             data[i + 1] = item.name

@@ -492,12 +492,12 @@ function calculate() {
     const weapon = document.getElementById('weapon-type').value;
 
     if (location1 && target1) {
-        // alert("Розрахунок успішно виконано!");
+        console.log('calculating...');
         fetch('/compute/', {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
             },
             body: JSON.stringify({
                 'location': location1,
@@ -517,7 +517,7 @@ function calculate() {
             alert(`Азимут: ${data['brng'].toFixed(5)}, Кут підйому: ${data['angle'].toFixed(5)}, Час польоту: ${data['flight_time'].toFixed(1)} с.`);
         })
         .catch(error => {
-            alert(error)
+            alert(error);
             console.error('Error:', error);
         });
     } else {
