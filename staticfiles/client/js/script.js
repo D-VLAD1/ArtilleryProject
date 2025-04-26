@@ -507,6 +507,7 @@ function calculate() {
         })
         .then(async response => {
             if (!response.ok) {
+                console.log('Response not ok:', response);
                 const error = await response.json();
                 throw new Error(error.error);
             }
