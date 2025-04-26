@@ -13,6 +13,7 @@ def map(requests):
 
 def howitzer(request):
     data = {}
+    print(request.method)
     if request.method == "GET":
         for i, item in enumerate(ArtillerySettings.objects.all()):
             data[i + 1] = item.name
@@ -21,6 +22,7 @@ def howitzer(request):
 
 
 def compute(requests):
+
     if requests.method == 'POST':
         post_data = json.loads(requests.body)
         location, target, weapon = post_data.get('location'), post_data.get('target'), post_data.get('weapon')
