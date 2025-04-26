@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.middleware.csrf import get_token
 from django.http import JsonResponse
 import json
 from math import sqrt, cos, sin, degrees, atan2, atan, radians
@@ -27,17 +28,18 @@ def compute(requests):
 
         data = _calculate(location, target, weapon)
         if isinstance(data, str):
-            return JsonResponse({'error': data}, status=400)
+            return JsonResponse({'csrfToken': get_token(requests), 'error': data}, status=400)
 
         brng, angle, flight_time = data
         return JsonResponse({
+            'csrfToken': get_token(requests),
             'brng': brng,
             'angle': angle,
             'flight_time': flight_time
         })
 
     return JsonResponse({
-            'error': 'POST method allowed'
+            'error': 'POST method allowed', 'csrfToken': get_token(requests)
         }, status=403)
 
 def _calculate(pos: dict, target: dict, weapon_name: str, bullet: str=None) -> tuple[float, float, float] | str:
